@@ -19,15 +19,15 @@ module Xdiary
     private
 
     def command
-      if (@h.has_key?(:s) or @h.has_key?(:st))
+      case @h.keys.to_s
+      when /today/
+        run_today
+      when /s|st/
         run_search
-      elsif @h.has_key?(:at) then run_add
-      elsif @h.has_key?(:a) then run_add
-      elsif @h.has_key?(:today) then run_today
-      elsif @h.has_key?(:l) then run_view
-      #else
-      #  x = @h.keys[0].to_s
-      #  run_add if x =~ /^a$|^at$|^t$/
+      when /at|a/
+        run_add
+      when "l"
+        run_view
       end
     end
 
@@ -80,9 +80,6 @@ module Xdiary
     end
 
     def base
-      #puts "Add class"
-      #p text = Diary.new(@title, @t).draft
-      #p @f;exit
       return print "Same name file exist.\n" if File.exist?(@f)
       unless File.exist?(@d)
         return nil unless make_dir
