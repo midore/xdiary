@@ -6,6 +6,7 @@
 # --------------------
 
 module Xdiary
+
   class Start
     def initialize
       $LOAD_PATH.delete(".")
@@ -32,6 +33,7 @@ module Xdiary
       Main.new(arg_h)
     end
   end
+
 end
 
 Xdiary::Start.new.run
