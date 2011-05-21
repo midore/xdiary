@@ -1,0 +1,20 @@
+module Xdiary
+
+  module DiaryConfig
+    def default_n
+      7
+    end
+    def default_title
+      'NewTitle'
+    end
+    def default_file_count
+      90
+    end
+    def data_dir
+     '/path/to/yours/mkdir/data-dir'
+    end
+  end
+
+end
+
+$XDIARYCONF = Xdiary::DiaryConfig

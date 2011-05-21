@@ -1,0 +1,26 @@
+[New]
+$ diary -a
+$ diary -a 'test title'
+$ diary -a 'testing' -t '2011/05/17/ 10:00'
+$ diary -at '2011/01/01 10:00'
+
+[List]
+$ diary -l
+$ diary -l 3
+$ diary -d 2009-12 -l
+$ diary -d 2009-12 -l 30
+
+[Today's files]
+$ diary -today
+
+[Search]
+$ diary -s 'ruby'
+$ diary -d 2009-12 -s 'ruby'
+
+[Search TextContents]
+$ diary -st 'github'
+$ diary -d 2009-12 -st 'github'
+
+[Select plus mark]
+$ diary -d 2009-12 -s +
+
