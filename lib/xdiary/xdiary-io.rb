@@ -92,7 +92,12 @@ module Xdiary
   module Osa
     def viaosa(path)
       editor_path = "/usr/bin/vim"
-      system("/usr/bin/osascript -e 'Tell application \"Terminal\" to do script \"#{editor_path} \" & \"#{path}\"'")
+      begin
+      # OS X MacVim ver 7.3
+      system("/usr/bin/osascript -e 'Tell application \"MacVim\" to open (POSIX file \"#{path}\") as string' -e 'return'")
+      # OS X /usr/bin/vim
+      # system("/usr/bin/osascript -e 'Tell application \"Terminal\" to do script \"#{editor_path} \" & \"#{path}\"'")
+      end
     end
   end
 
