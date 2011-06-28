@@ -22,7 +22,7 @@ module Xdiary
       case @h.keys.to_s
       when /today/
         run_today
-      when /s|st/
+      when /s|st|sc/
         run_search
       when /at|a/
         run_add
@@ -37,11 +37,17 @@ module Xdiary
     end
 
     def run_search
-      w = @h[:s] ||= @h[:st]
       opt = @h[:st]
+      w = @h[:s]
+      w ||= @h[:st]
+      w ||= @h[:sc]
       return print "Error: Search word error\n" unless w
-      a = Search.new(@dir, @num).base(w, opt)
-      run_request(a)
+      a = Search.new(@dir, @num)
+      w = nil if /\+/.match(w)
+      a.plus = 'plus' if (@h[:sc] or w.nil? )
+      a.opt = @h[:st]
+      res = a.base(w)
+      run_request(res) if res
     end
 
     def run_today
@@ -108,13 +114,13 @@ module Xdiary
   end
 
   class Diary
-    attr_reader :path
-
     def initialize(title=nil, t=nil)
       @title, @created = title, t
       @control, @category = 'yes', 'diary'
       @path = nil, @content = nil
     end
+
+    attr_reader :path, :category
 
     def to_s
       ary = [posted?, created_s, @title, @category]
@@ -199,19 +205,26 @@ module Xdiary
   class Search < View
     def initialize(d, n)
       @ary, @d, @n = Array.new, d, n
+      @opt, @word = nil, nil
     end
 
-    def base(w, opt)
-      @st = opt
-      (/\+/.match(w)) ? @plus = 'plus' : @word = Regexp.new(w, true)
+    attr_writer :plus, :opt
+
+    def base(w)
+      @word = Regexp.new(w, true) if w
       set_ary
     end
 
     private
 
     def get_diary(x)
-      h = find_index(x) unless @st
-      h = find_content(x) unless @st.nil?
+      unless @plus
+        h = find_index(x) unless @opt
+        h = find_content(x) if @opt
+      else
+        h = find_posted(x) unless @word
+        h = find_posted_category(x) if @word
+      end
       to_obj(h) unless h.nil?
     end
   end
