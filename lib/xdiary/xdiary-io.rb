@@ -3,6 +3,7 @@
 # --------------------
 
 module Xdiary
+
   module Setting
     def check_conf
       return false unless File.exist?(data_dir)
@@ -61,6 +62,21 @@ module Xdiary
         return h unless m.empty?
       else
         return h unless h[:control] == 'yes'
+      end
+    end
+
+    def find_posted(path)
+      h = view_h(path)
+      return nil unless h
+      return h unless h[:control] == 'yes'
+    end
+
+    def find_posted_category(path)
+      h = view_h(path)
+      return nil unless h
+      unless h[:control] == 'yes'
+        m = h[:category].match(@word)
+        return h if m
       end
     end
 
