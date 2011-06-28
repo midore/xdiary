@@ -19,38 +19,20 @@ module Xdiary
     def base
       return help if (@h.has_key?(:h) or @h.has_key?(:help))
       return @err if check_opt
-      return @err if check_t
+      return @err if check_time
       return @err if check_l
       return @err if check_d
       return [@err, @h]
     end
 
-    private
-
-    def arg_keys
-      a = {
-        '-a'=>"Example: -a \'NewTitle\' -t \'2010/01/01/ 11:00\' | -a \'NewTitle\'",
-        '-at'=>"add new file without title. Example: -at \'2010/01/01/ 11:00\'",
-        '-d'=>"specified directory. Example: -d \'2010-01\'",
-        '-l'=>"print list.",
-        '-today'=>"print today list",
-        '-s'=>"search in title or category, control, date",
-        '-st'=>"search in content",
-        '-h | -help'=>"this help",
-      }
-      return a
+    def check_opt
+      @h.keys.each{|k| @err = "Error: No option" unless arg_keys["-#{k}"] }
+      @err = "Error: Option" if (@h.has_key?(:at) && @h.has_key?(:a))
+      return @err
     end
 
-    def check_str
-      str ||= @h[:a]
-      str ||= @h[:s]
-      str ||= @h[:st]
-      return @err unless str
-      return @err = "Error: Over chractor" if str.size > 30
-    end
-
-    def check_t
-      t, a, err = @h[:t], @h[:at], "Error: Option'"
+    def check_time
+      t, a, err = @h[:t], @h[:at], "Error: Option DateTime'"
       return nil unless (t or a)
       (a.nil?) ? str = t : str = a
       return @err = "Error: Over charactor" if str.size > 20
@@ -84,23 +66,25 @@ module Xdiary
       return @err
     end
 
-    def check_opt
-      err = "Error: Option"
-      @h.keys.each{|k|
-        if k == :t
-          @err = err unless @h.has_key?(:a)
-          @err = "Error: Option. -t is nil" unless @h[:t]
-          next
-        end
-        @err = "Error: No option" unless arg_keys["-#{k}"]
-      }
-      @err = err if (@h.has_key?(:at) && @h.has_key?(:a))
-      return @err
-    end
-
     def help
       arg_keys.sort_by{|x| x}.each{|k,v| print "#{k}: #{v}\n"}
       return 'help'
+    end
+
+    def arg_keys
+      a = {
+        '-a'=>"Example: -a \'NewTitle\'",
+        '-at'=>"add new file without title. Example: -at \'2010/01/01/ 11:00\'",
+        '-t'=>"add new file with title & time. Example: -a \'NewTitle'\ -t \'2010/01/01/ 11:00\'",
+        '-d'=>"specified directory. Example: -d \'2010-01\'",
+        '-l'=>"print list.",
+        '-today'=>"print today list",
+        '-s'=>"search in title or category, control, date",
+        '-st'=>"search in content",
+        '-sc'=>"search in category posted entry",
+        '-h | -help'=>"this help",
+      }
+      return a
     end
   end
 
