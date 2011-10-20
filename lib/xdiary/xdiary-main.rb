@@ -206,6 +206,7 @@ module Xdiary
     def initialize(d, n)
       @ary, @d, @n = Array.new, d, n
       @opt, @word = nil, nil
+      @plus = nil
     end
 
     attr_writer :plus, :opt
@@ -218,12 +219,12 @@ module Xdiary
     private
 
     def get_diary(x)
-      unless @plus
-        h = find_index(x) unless @opt
-        h = find_content(x) if @opt
-      else
+      if @plus
         h = find_posted(x) unless @word
         h = find_posted_category(x) if @word
+      else
+        h = find_index(x) unless @opt
+        h = find_content(x) if @opt
       end
       to_obj(h) unless h.nil?
     end
@@ -255,6 +256,7 @@ module Xdiary
       when 'r' then text_remove(@diary.path)
       when 'e' then text_open(@diary.path)
       end
+      exit
     end
 
     def text_open(f)
