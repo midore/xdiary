@@ -26,7 +26,7 @@ module Xdiary
         run_search
       when /at|a/
         run_add
-      when "l"
+      when /l/
         run_view
       end
     end
