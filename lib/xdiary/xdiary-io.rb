@@ -1,6 +1,7 @@
 # --------------------
 # xdiary-io.rb
 # --------------------
+# 2012-10-09
 
 module Xdiary
 
@@ -34,7 +35,7 @@ module Xdiary
 
   module Writer
     def writer(path, data)
-      File.open(path, 'w:utf-8'){|f| f.print data}
+      File.open(path, 'w'){|f| f.print data}
       # print "Saved: #{path}\n"
     end
   end
@@ -107,22 +108,23 @@ module Xdiary
 
   module Osa
     def viaosa(path)
+      # 2012-10-09
+      # MacVim.app version 7.3.646 / OS X Mountain Lion 10.8.2
+      osa = '/usr/bin/osascript'
+      macvim = "Tell application \"MacVim\""
+      s1 = "#{macvim}\nactivate"
+      s2 = "open (POSIX file \"#{path}\") as string"
+      s3 = "end tell\nreturn"
       begin
-        # Mac OS X /usr/bin/vim
-        # editor_path = "/usr/bin/vim"
-        # system("/usr/bin/osascript -e 'Tell application \"Terminal\" to do script \"#{editor_path} \" & \"#{path}\"'")
-        # Mac OS X ~/Application/MacVim.app version 7.3.315
-        s = system("/usr/bin/osascript -e 'Tell application \"MacVim\" to open (POSIX file \"#{path}\") as string' -e 'return'")
-        exit unless s
-        system("/usr/bin/osascript -e 'Tell application \"MacVim\" to activate'")
+        e = system("#{osa} -e '#{s1}' -e '#{s2}' -e'#{s3}'")
+        print "MacVim Error\n" unless e
+        print "MacVim is OK\n"
       ensure
         print "bye\n"
         exit
       end
     end
   end
-
   Setting.send(:include, $XDIARYCONF)
-  # end of moudle
 end
 
