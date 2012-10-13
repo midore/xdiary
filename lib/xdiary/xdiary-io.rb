@@ -108,7 +108,15 @@ module Xdiary
 
   module Osa
     def viaosa(path)
-      # 2012-10-09
+      # 2012-10-13
+      begin
+        system("open -a 'MacVim' #{path}")
+      ensure
+        return print "bye\n"
+      end
+    end
+
+    def viaosa_old(path)
       # MacVim.app version 7.3.646 / OS X Mountain Lion 10.8.2
       osa = '/usr/bin/osascript'
       macvim = "Tell application \"MacVim\""
