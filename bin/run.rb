@@ -1,6 +1,6 @@
 #!/path/to/ruby18
-# coding: utf-8
 
+# coding: utf-8
 # --------------------
 # run.rb
 # --------------------
@@ -9,7 +9,8 @@ module Xdiary
 
   class Start
     def initialize
-      ### Setting path to 'xdiary-conf' ###
+      $LOAD_PATH.delete(".")
+      # Setting path to 'xdiary-conf'
       # conf_path = '/path/to/yours/xdiary-conf'
       #
       (print "Error: not found xdiary-conf\n"; exit) unless File.exist?(conf_path)
