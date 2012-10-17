@@ -9,17 +9,10 @@ module Xdiary
 
   class Start
     def initialize
-      $LOAD_PATH.delete(".")
-      # Setting path to 'xdiary-conf'
-      # dir = File.dirname(File.dirname(File.expand_path($PROGRAM_NAME)))
-      # $LOAD_PATH.push(File.join(dir, 'lib'))
+      # $LOAD_PATH.delete(".")
       #
-      # [Default setting]
-      # conf_path = File.join(dir, 'xdiary-conf')
-      #
-      # [Customize setting]
+      ### Setting path to 'xdiary-conf' ###
       # conf_path = '/path/to/yours/xdiary-conf'
-      #
       #
       (print "Error: not found xdiary-conf\n"; exit) unless File.exist?(conf_path)
       load conf_path, wrap=true
