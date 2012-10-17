@@ -9,8 +9,6 @@ module Xdiary
 
   class Start
     def initialize
-      # $LOAD_PATH.delete(".")
-      #
       ### Setting path to 'xdiary-conf' ###
       # conf_path = '/path/to/yours/xdiary-conf'
       #
